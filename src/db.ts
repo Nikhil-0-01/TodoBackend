@@ -1,19 +1,20 @@
 import { Client } from 'pg';
 
-let pgClient: Client;
+let pgClient: Client | null = null;
 
+// Initialize the client only if the DATABASE_URL is present
 if (process.env.DATABASE_URL) {
   pgClient = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
-      rejectUnauthorized: false, // Ensure SSL is enabled for cloud databases
+      rejectUnauthorized: false, // Enable SSL for cloud-hosted databases
     },
   });
 }
 
-// Asynchronous database connection handler
+// Ensures that the database connection is established
 async function dbConnect() {
-  if (!pgClient._connected) {
+  if (pgClient && !pgClient._connected) {
     try {
       await pgClient.connect();
       console.log('Database connected successfully');
@@ -24,10 +25,15 @@ async function dbConnect() {
   }
 }
 
-// Avoid creating tables on each invocation
+// This function will ensure the schema is set up only once
 export async function initializeSchema() {
   try {
-    // Create tables only if they don't exist (this should only happen once or in migrations)
+    // Check if pgClient is initialized before querying
+    if (!pgClient) {
+      throw new Error('PostgreSQL client is not initialized.');
+    }
+
+    // Create tables only if they don't already exist (idempotent operation)
     await pgClient.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -49,17 +55,21 @@ export async function initializeSchema() {
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       );
     `);
+    console.log('Tables created successfully or already exist');
   } catch (err) {
     console.error('Error creating tables:', err);
   }
 }
 
-// Initialize DB connection and schema at startup (in a non-serverless environment, this would be called once)
-dbConnect();
+// Ensure DB is connected and schema is set up
+async function setupDatabase() {
+  await dbConnect(); // Ensure the DB connection is established
+  await initializeSchema(); // Initialize the schema (create tables)
+}
 
-// Run schema setup once
-initializeSchema().catch((err) => {
-  console.error('Error initializing schema:', err);
+// Set up database connection and schema during initialization
+setupDatabase().catch((err) => {
+  console.error('Error initializing database:', err);
 });
 
-export { pgClient }; // Export the client for use in other parts of the application
+export { pgClient }; // Export pgClient for use in other modules
