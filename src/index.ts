@@ -8,9 +8,15 @@ import { Middleware } from "./middleware";
 
 // Load environment variables from .env file
 dotenv.config();
+console.log('DATABASE_URL:', process.env.DATABASE_URL);  // Add this to check if it's loaded
+
 
 // Initialize app
 const app = express();
+
+
+
+
 
 // Middleware
 app.use(express.json());

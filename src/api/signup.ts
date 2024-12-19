@@ -23,6 +23,7 @@ app.post('/api/signup', async (req: Request, res: Response) => {
     res.status(200).json({ user: 'Done' });
   } catch (error) {
     console.error(error);
+    // @ts-ignore 
     res.status(400).json({ error: error.message });
   }
 });
