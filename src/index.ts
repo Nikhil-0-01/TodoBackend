@@ -20,7 +20,10 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: 'https://todo-app-chi-cyan-10.vercel.app/'  // Replace with your frontend URL
+}));
+
 
 // Secret key from environment variables
 const SECRET = process.env.SECRET || "defaultsecret"; // Default secret in case the .env is not loaded correctly
