@@ -14,6 +14,7 @@ if (process.env.DATABASE_URL) {
 
 // Ensures that the database connection is established
 async function dbConnect() {
+  // @ts-ignore
   if (pgClient && !pgClient._connected) {
     try {
       await pgClient.connect();
