@@ -1,5 +1,3 @@
-// /src/db.ts
-
 import { Client } from 'pg';
 
 let pgClient: Client;
@@ -8,13 +6,13 @@ if (process.env.DATABASE_URL) {
   pgClient = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
-      rejectUnauthorized: false
+      rejectUnauthorized: false, // Ensure SSL is enabled for cloud databases
     },
   });
 }
 
+// Asynchronous database connection handler
 async function dbConnect() {
-    // @ts-ignore 
   if (!pgClient._connected) {
     try {
       await pgClient.connect();
@@ -26,17 +24,16 @@ async function dbConnect() {
   }
 }
 
-dbConnect();
-
-// userSchema setup for initial database setup
-export async function schemaSetting() {
+// Avoid creating tables on each invocation
+export async function initializeSchema() {
   try {
+    // Create tables only if they don't exist (this should only happen once or in migrations)
     await pgClient.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
         firstname VARCHAR(100) NOT NULL,
         lastname VARCHAR(100) NOT NULL,
-        email VARCHAR(255) UNIQUE NOT NULL,   
+        email VARCHAR(255) UNIQUE NOT NULL,
         username VARCHAR(100) UNIQUE NOT NULL,
         password VARCHAR(100) NOT NULL
       );
@@ -57,6 +54,12 @@ export async function schemaSetting() {
   }
 }
 
-schemaSetting();
+// Initialize DB connection and schema at startup (in a non-serverless environment, this would be called once)
+dbConnect();
 
-export { pgClient };
+// Run schema setup once
+initializeSchema().catch((err) => {
+  console.error('Error initializing schema:', err);
+});
+
+export { pgClient }; // Export the client for use in other parts of the application
