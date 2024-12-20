@@ -9,9 +9,8 @@ export function Middleware(req: any, res: any, next: any) {
   }
 
   try {
-    const tokenVerify = jwt.verify(authHeader.split(' ')[1], 
-    // @ts-ignore 
-    process.env.SECRET); // Split the token from 'Bearer <token>'
+    // @ts-ignore
+    const tokenVerify = jwt.verify(authHeader, process.env.SECRET); // Split the token from 'Bearer <token>'
     // @ts-ignore
     req.userid = tokenVerify.id;
     next();
