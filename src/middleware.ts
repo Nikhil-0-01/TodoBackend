@@ -17,7 +17,7 @@ export function Middleware(req: any, res: any, next: any) {
 
   try {
     // Verify the token using the secret key from the environment variable
-    const tokenVerify = jwt.verify(token, process.env.SECRET || 'defaultSecret');
+    const tokenVerify = jwt.verify(token, process.env.SECRET);
     
     // Attach the userId to the request object for use in subsequent routes
     req.userid = tokenVerify.id;
