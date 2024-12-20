@@ -84,22 +84,23 @@ app.post("/api/signin", async (req, res) => {
   // @ts-ignore 
 
 app.get("/api/alltodos", Middleware, async (req, res) => {
-  try {
-        // @ts-ignore 
+ try {
 
-    const userId = req.userid;
-    if (!userId) {
-      return res.status(401).json({ message: "Invalid Token" });
+    // @ts-ignore 
+    const { userid } = req;  // Assuming `userid` is added in the middleware to `req.body`
+    if (!userid) {
+      return res.status(401).json({ message: 'Invalid Token' });
     }
 
     const findTodos = await pgClient.query(
-      `SELECT title, description, isdone FROM TODO WHERE user_id = $1`,
-      [userId]
+      `SELECT title, description, isdone FROM TODO WHERE user_id = $1`, 
+      [userid]
     );
 
     res.json({ todo: findTodos.rows });
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
