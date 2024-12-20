@@ -2,9 +2,11 @@ import express, { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { pgClient } from '../db';  // Adjust the path if necessary
+import cors from "cors";
 
 const app = express();
 app.use(express.json());  // To parse incoming JSON data
+app.use(cors())
 
 // POST /api/signin route
 // @ts-ignore 

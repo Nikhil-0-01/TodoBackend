@@ -1,10 +1,12 @@
 import express, { Request, Response } from 'express';
 import { pgClient } from '../db';  // Adjust the path based on your file structure
 import { Middleware } from '../middleware';  // Adjust the path based on your file structure
+import cors from "cors";
 
 const app = express();
 app.use(express.json()); // To parse incoming JSON data
 app.use(Middleware);     // Add your authentication middleware
+app.use(cors())
 
 // GET /alltodos route
 // @ts-ignore 
