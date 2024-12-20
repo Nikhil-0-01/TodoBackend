@@ -4,12 +4,11 @@ import { Middleware } from '../middleware';  // Adjust path based on your file s
 import cors from "cors"
 const app = express();
 app.use(express.json());  // To parse incoming JSON data
-app.use(Middleware);      // Add your authentication middleware
 app.use(cors())
 
 // POST /api/createTodo route
 // @ts-ignore 
-app.post('/api/createTodo', async (req: Request, res: Response) => {
+app.post('/api/createTodo', Middleware, async (req: Request, res: Response) => {
   const { title, description, isdone } = req.body;
 
   try {
