@@ -16,7 +16,7 @@ app.post('/api/signin', async (req: Request, res: Response) => {
   try {
     // Check if the user exists in the database
     const findUser = await pgClient.query(
-      `SELECT email, password FROM users WHERE email = $1`,
+      `SELECT email, password, username, id FROM users WHERE email = $1`,
       [email]
     );
 
