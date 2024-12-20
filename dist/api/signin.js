@@ -7,8 +7,10 @@ const express_1 = __importDefault(require("express"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const db_1 = require("../db"); // Adjust the path if necessary
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json()); // To parse incoming JSON data
+app.use((0, cors_1.default)());
 // POST /api/signin route
 // @ts-ignore 
 app.post('/api/signin', async (req, res) => {

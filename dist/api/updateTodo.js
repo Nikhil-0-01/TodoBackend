@@ -7,8 +7,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("../db"); // Database connection
 const middleware_1 = require("../middleware"); // Middleware for JWT
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+app.use((0, cors_1.default)());
 // Update Todo
 // @ts-ignore 
 app.put("/api/updateTodo", middleware_1.Middleware, async (req, res) => {

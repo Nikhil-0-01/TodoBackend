@@ -12,6 +12,10 @@ app.use(cors())
 // @ts-ignore 
 app.post('/api/signin', async (req: Request, res: Response) => {
   const { email, password } = req.body;
+  
+  if (!email || !password) {
+    return res.status(401).json({ status: 401, message: "Fill the required fields" });
+  }
 
   try {
     // Check if the user exists in the database
