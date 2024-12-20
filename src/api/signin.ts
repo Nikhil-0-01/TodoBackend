@@ -36,7 +36,7 @@ app.post('/api/signin', async (req: Request, res: Response) => {
     }
 
     // Generate JWT token if authentication is successful
-    const token = jwt.sign({ id: findUser.rows[0].id }, process.env.SECRET || 'defaultSecret', { expiresIn: '44h' });
+    const token = jwt.sign({ id: findUser.rows[0].id }, process.env.SECRET || 'defaultSecret', { expiresIn: '1h' });
 
     // Send response with the token and username
     res.json({ token, username: findUser.rows[0].username });

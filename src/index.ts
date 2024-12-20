@@ -69,7 +69,7 @@ app.post("/api/signin", async (req, res) => {
     }
 
     // @ts-ignore 
-    const token = jwt.sign({ id: findUser.rows[0].id }, process.env.SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: findUser.rows[0].id }, process.env.SECRET, { expiresIn: '44h' } );
 
     res.json({
       token: token,
