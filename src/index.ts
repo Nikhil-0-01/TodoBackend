@@ -24,7 +24,6 @@ app.use(cors());
 
 
 // Secret key from environment variables
-const SECRET = process.env.SECRET || "defaultsecret"; // Default secret in case the .env is not loaded correctly
 
 // Signup Route
 app.post("/api/signup", async (req, res) => {
@@ -69,7 +68,8 @@ app.post("/api/signin", async (req, res) => {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    const token = jwt.sign({ id: findUser.rows[0].id }, SECRET, { expiresIn: "1h" });
+    // @ts-ignore 
+    const token = jwt.sign({ id: findUser.rows[0].id }, process.env.SECRET, { expiresIn: "1h" });
 
     res.json({
       token: token,
