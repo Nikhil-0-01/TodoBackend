@@ -125,7 +125,7 @@ app.post("/api/createTodo", Middleware, async (req, res) => {
 
 // Update Todo Route
 // @ts-ignore 
-app.put("/api/alltodos/update", Middleware, async (req, res) => {
+app.put("/api/updateTodo", Middleware, async (req, res) => {
   const { id, title, description, isdone } = req.body;
 
   try {
@@ -154,7 +154,7 @@ app.put("/api/alltodos/update", Middleware, async (req, res) => {
 // Delete Todo Route
     // @ts-ignore 
 
-app.delete("/api/alltodos/delete", Middleware, async (req, res) => {
+app.delete("/api/deleteTodo", Middleware, async (req, res) => {
   const { id } = req.body;
 
   try {
