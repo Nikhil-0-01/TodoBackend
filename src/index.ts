@@ -20,9 +20,7 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors({
-  origin: 'https://todo-app-chi-cyan-10.vercel.app/'  // Replace with your frontend URL
-}));
+app.use(cors());
 
 
 // Secret key from environment variables
