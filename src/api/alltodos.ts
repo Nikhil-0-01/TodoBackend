@@ -10,7 +10,7 @@ app.use(cors())
 
 // GET /alltodos route
 // @ts-ignore 
-app.get('/api/alltodos', async (req: Request, res: Response) => {
+app.get('/api/alltodos', Middleware, async (req: Request, res: Response) => {
   try {
     const { userid } = req.body;  // Assuming `userid` is added in the middleware to `req.body`
     if (!userid) {

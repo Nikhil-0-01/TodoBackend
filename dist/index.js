@@ -19,7 +19,6 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 // Secret key from environment variables
-const SECRET = process.env.SECRET || "defaultsecret"; // Default secret in case the .env is not loaded correctly
 // Signup Route
 app.post("/api/signup", async (req, res) => {
     const { firstname, lastname, username, email, password } = req.body;
@@ -49,7 +48,8 @@ app.post("/api/signin", async (req, res) => {
         if (!passwordCheck) {
             return res.status(400).json({ message: "Invalid email or password" });
         }
-        const token = jsonwebtoken_1.default.sign({ id: findUser.rows[0].id }, SECRET, { expiresIn: "1h" });
+        // @ts-ignore 
+        const token = jsonwebtoken_1.default.sign({ id: findUser.rows[0].id }, process.env.SECRET, { expiresIn: '44h' });
         res.json({
             token: token,
             username: findUser.rows[0].username,
@@ -76,7 +76,7 @@ app.get("/api/alltodos", middleware_1.Middleware, async (req, res) => {
     }
 });
 // Create Todo Route
-app.post("/api/alltodos/create", middleware_1.Middleware, async (req, res) => {
+app.post("/api/createTodo", middleware_1.Middleware, async (req, res) => {
     const { title, description, isdone } = req.body;
     try {
         // @ts-ignore 

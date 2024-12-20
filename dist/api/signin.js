@@ -15,6 +15,9 @@ app.use((0, cors_1.default)());
 // @ts-ignore 
 app.post('/api/signin', async (req, res) => {
     const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(401).json({ status: 401, message: "Fill the required fields" });
+    }
     try {
         // Check if the user exists in the database
         const findUser = await db_1.pgClient.query(`SELECT email, password, username, id FROM users WHERE email = $1`, [email]);
