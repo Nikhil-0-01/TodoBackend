@@ -10,6 +10,8 @@ export function Middleware(req: any, res: any, next: any) {
   }
 
   try {
+    console.log('Secret:', process.env.SECRET);
+
 
     // @ts-ignore 
     const tokenVerify = jwt.verify(authHeader, process.env.SECRET);
