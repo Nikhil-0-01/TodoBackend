@@ -104,7 +104,7 @@ app.get("/api/alltodos", Middleware, async (req, res) => {
 });
 
 // Create Todo Route
-app.post("/api/alltodos/create", Middleware, async (req, res) => {
+app.post("/api/createTodo", Middleware, async (req, res) => {
   const { title, description, isdone } = req.body;
 
   try {
