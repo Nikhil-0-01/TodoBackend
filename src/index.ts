@@ -4,7 +4,7 @@ import { pgClient } from "./db";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import dotenv from "dotenv";
-import { Middleware } from "./middleware";
+import { Middleware } from "./middleware"
 
 // Load environment variables from .env file
 dotenv.config();
@@ -69,8 +69,8 @@ app.post("/api/signin", async (req, res) => {
     }
 
     // @ts-ignore 
-    const token = jwt.sign({ id: findUser.rows[0].id }, process.env.SECRET, { expiresIn: '44h' } );
-
+    const token = jwt.sign({ id: findUser.rows[0].id }, process.env.SECRET);
+    
     res.json({
       token: token,
       username: findUser.rows[0].username,
@@ -85,21 +85,22 @@ app.post("/api/signin", async (req, res) => {
 
 app.get("/api/alltodos", Middleware, async (req, res) => {
   try {
-        // @ts-ignore 
 
-    const userId = req.userid;
-    if (!userId) {
-      return res.status(401).json({ message: "Invalid Token" });
+    // @ts-ignore 
+    const { userid } = req;  // Assuming `userid` is added in the middleware to `req.body`
+    if (!userid) {
+      return res.status(401).json({ message: 'Invalid Token' });
     }
 
     const findTodos = await pgClient.query(
-      `SELECT title, description, isdone FROM TODO WHERE user_id = $1`,
-      [userId]
+      `SELECT title, description, isdone FROM TODO WHERE user_id = $1`, 
+      [userid]
     );
 
     res.json({ todo: findTodos.rows });
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
@@ -124,7 +125,7 @@ app.post("/api/createTodo", Middleware, async (req, res) => {
 
 // Update Todo Route
 // @ts-ignore 
-app.put("/api/alltodos/update", Middleware, async (req, res) => {
+app.put("/api/updateTodo", Middleware, async (req, res) => {
   const { id, title, description, isdone } = req.body;
 
   try {
@@ -153,7 +154,7 @@ app.put("/api/alltodos/update", Middleware, async (req, res) => {
 // Delete Todo Route
     // @ts-ignore 
 
-app.delete("/api/alltodos/delete", Middleware, async (req, res) => {
+app.delete("/api/deleteTodo", Middleware, async (req, res) => {
   const { id } = req.body;
 
   try {

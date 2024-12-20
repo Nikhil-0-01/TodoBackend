@@ -6,20 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Middleware = Middleware;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 function Middleware(req, res, next) {
-    const authHeader = req.headers['Authorization'];
+    // Ensure you're accessing the authorization header with the correct case
+    const authHeader = req.headers['authorization']; // 'authorization' is all lowercase
     if (!authHeader) {
         return res.status(401).json({ msg: 'Authorization header is missing' });
     }
-    // Split the token from 'Bearer <token>'
-    const token = authHeader.split(' ')[1];
-    if (!token) {
-        return res.status(401).json({ msg: 'Token is missing in the Authorization header' });
-    }
     try {
-        // Verify token
         // @ts-ignore 
-        const tokenVerify = jsonwebtoken_1.default.verify(token, process.env.SECRET);
-        req.userid = tokenVerify.id; // Store the user ID from the decoded token
+        const tokenVerify = jsonwebtoken_1.default.verify(authHeader, process.env.SECRET);
+        req.userid = tokenVerify.id;
         next();
     }
     catch (err) {

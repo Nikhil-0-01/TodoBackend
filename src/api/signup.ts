@@ -5,7 +5,7 @@ import cors from "cors";
 
 const app = express();
 app.use(express.json());  // To parse incoming JSON data
-app.use(cors())
+app.use(cors());
 
 // POST /api/signup route
 app.post('/api/signup', async (req: Request, res: Response) => {

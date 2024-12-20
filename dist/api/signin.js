@@ -31,7 +31,8 @@ app.post('/api/signin', async (req, res) => {
             return res.status(400).json({ message: 'Invalid email or password' });
         }
         // Generate JWT token if authentication is successful
-        const token = jsonwebtoken_1.default.sign({ id: findUser.rows[0].id }, process.env.SECRET || 'defaultSecret', { expiresIn: '1h' });
+        // @ts-ignore 
+        const token = jsonwebtoken_1.default.sign({ id: findUser.rows[0].id }, process.env.SECRET);
         // Send response with the token and username
         res.json({ token, username: findUser.rows[0].username });
     }

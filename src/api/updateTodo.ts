@@ -1,7 +1,7 @@
 // /api/updateTodo.ts
 
 import { pgClient } from "../db"; // Database connection
-import { Middleware } from "../middleware"; // Middleware for JWT
+import { Middleware }  from "../middleware"
 import express from "express";
 import cors from "cors"
 

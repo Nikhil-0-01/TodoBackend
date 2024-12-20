@@ -1,24 +1,21 @@
+
 import jwt from "jsonwebtoken";
+
 export function Middleware(req: any, res: any, next: any) {
-  const authHeader = req.headers['Authorization'];
+  // Ensure you're accessing the authorization header with the correct case
+  const authHeader = req.headers['authorization'];  // 'authorization' is all lowercase
 
   if (!authHeader) {
     return res.status(401).json({ msg: 'Authorization header is missing' });
   }
 
-  // Split the token from 'Bearer <token>'
-  const token = authHeader.split(' ')[1]; 
-
-  if (!token) {
-    return res.status(401).json({ msg: 'Token is missing in the Authorization header' });
-  }
-
   try {
-    // Verify token
+
     // @ts-ignore 
-    const tokenVerify = jwt.verify(token, process.env.SECRET);  
-    req.userid = tokenVerify.id;  // Store the user ID from the decoded token
+    const tokenVerify = jwt.verify(authHeader, process.env.SECRET);
+    req.userid = (tokenVerify as any).id;
     next();
+    
   } catch (err) {
     return res.status(401).json({ msg: 'Invalid or expired token' });
   }

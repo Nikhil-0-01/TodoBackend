@@ -49,7 +49,7 @@ app.post("/api/signin", async (req, res) => {
             return res.status(400).json({ message: "Invalid email or password" });
         }
         // @ts-ignore 
-        const token = jsonwebtoken_1.default.sign({ id: findUser.rows[0].id }, process.env.SECRET, { expiresIn: '44h' });
+        const token = jsonwebtoken_1.default.sign({ id: findUser.rows[0].id }, process.env.SECRET);
         res.json({
             token: token,
             username: findUser.rows[0].username,

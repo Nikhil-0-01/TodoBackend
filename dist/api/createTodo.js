@@ -5,15 +5,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const db_1 = require("../db"); // Adjust path based on your file structure
-const middleware_1 = require("../middleware"); // Adjust path based on your file structure
+const middleware_1 = require("../middleware");
 const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json()); // To parse incoming JSON data
-app.use(middleware_1.Middleware); // Add your authentication middleware
 app.use((0, cors_1.default)());
 // POST /api/createTodo route
 // @ts-ignore 
-app.post('/api/createTodo', async (req, res) => {
+app.post('/api/createTodo', middleware_1.Middleware, async (req, res) => {
     const { title, description, isdone } = req.body;
     try {
         const { userid } = req.body; // Assuming the `userid` is added to `req.body` by Middleware
