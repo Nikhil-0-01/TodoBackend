@@ -4,9 +4,9 @@ import jwt from 'jsonwebtoken';
 
 export function Middleware(req: any, res: any, next: any) {
   const authHeader = req.headers['Authorization'];
-  if (!authHeader) {
-    return res.status(401).json({ msg: 'Invalid Credentials' });
-  }
+  // if (!authHeader) {
+  //   return res.status(401).json({ msg: 'Invalid Credentials' });
+  // }
 
   try {
     // @ts-ignore
