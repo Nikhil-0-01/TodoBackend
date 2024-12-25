@@ -8,7 +8,7 @@ app.use(cors())
 
 // POST /api/createTodo route
 // @ts-ignore 
-app.post('/api/createNote', Middleware, async (req: Request, res: Response) => {
+app.post("/api/createNote", Middleware, async (req: Request, res: Response) => {
  const { title } = req.body;
 
   try {
