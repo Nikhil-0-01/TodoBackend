@@ -186,7 +186,7 @@ app.post('/api/createNote', Middleware, async (req, res) => {
 
   try {
     // const { userid } = req.body; 
-      const userid = req.userid;
+      const { userid } = req;
 
     if (!userid) {
       return res.status(401).json({ message: 'Invalid Token' });  // Token validation failure
