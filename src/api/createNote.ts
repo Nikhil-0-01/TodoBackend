@@ -9,12 +9,20 @@ app.use(cors())
 // POST /api/createTodo route
 // @ts-ignore 
 app.post('/api/createNote', Middleware, async (req: Request, res: Response) => {
+<<<<<<< HEAD
   const { title } = req.body;
 
   try {
     // const { userid } = req.body; 
     // @ts-ignore 
       const userid = req.userid;
+=======
+ const { title } = req.body;
+
+  try {
+   // @ts-ignore
+      const { userid } = req;
+>>>>>>> 5d9d944ee88293e1da877739aae6cdf503497519
 
     if (!userid) {
       return res.status(401).json({ message: 'Invalid Token' });  // Token validation failure
@@ -31,4 +39,8 @@ app.post('/api/createNote', Middleware, async (req: Request, res: Response) => {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });  // Handle any errors
   }
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> 5d9d944ee88293e1da877739aae6cdf503497519
