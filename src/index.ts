@@ -180,16 +180,6 @@ app.delete("/api/deleteTodo", Middleware, async (req, res) => {
 });
 
 
-<<<<<<< HEAD
-// @ts-ignore 
-app.post('/api/createNote', Middleware, async (req, res) => {
-  const { title } = req.body;
-
-  try {
-    // @ts-ignore 
-    const { userid } = req; 
-
-=======
 // @ts-ignore
 app.post("/api/createNote", Middleware, async (req, res) => {
   const { title } = req.body;
@@ -197,7 +187,6 @@ app.post("/api/createNote", Middleware, async (req, res) => {
   try {
     // @ts-ignore
       const { userid } = req;
->>>>>>> 5d9d944ee88293e1da877739aae6cdf503497519
 
     if (!userid) {
       return res.status(401).json({ message: 'Invalid Token' });  // Token validation failure
