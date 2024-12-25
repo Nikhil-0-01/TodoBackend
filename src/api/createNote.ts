@@ -9,11 +9,10 @@ app.use(cors())
 // POST /api/createTodo route
 // @ts-ignore 
 app.post('/api/createNote', Middleware, async (req: Request, res: Response) => {
-  const { title } = req.body;
+ const { title } = req.body;
 
   try {
-    // const { userid } = req.body; 
-      const userid = req.userid;
+      const { userid } = req;
 
     if (!userid) {
       return res.status(401).json({ message: 'Invalid Token' });  // Token validation failure
