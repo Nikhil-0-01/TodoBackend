@@ -70,7 +70,11 @@ app.post("/api/signin", async (req, res) => {
 
     // @ts-ignore 
     const token = jwt.sign({ id: findUser.rows[0].id }, process.env.SECRET);
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 5da0dd817972df19f44f9ffa9a69e4cd8a1131ad
     res.json({
       token: token,
       username: findUser.rows[0].username,
@@ -84,7 +88,11 @@ app.post("/api/signin", async (req, res) => {
   // @ts-ignore 
 
 app.get("/api/alltodos", Middleware, async (req, res) => {
+<<<<<<< HEAD
   try {
+=======
+ try {
+>>>>>>> 5da0dd817972df19f44f9ffa9a69e4cd8a1131ad
 
     // @ts-ignore 
     const { userid } = req;  // Assuming `userid` is added in the middleware to `req.body`
@@ -126,31 +134,39 @@ app.post("/api/createTodo", Middleware, async (req, res) => {
 // Update Todo Route
 // @ts-ignore 
 app.put("/api/updateTodo", Middleware, async (req, res) => {
+<<<<<<< HEAD
   const { id, title, description, isdone } = req.body;
+=======
+  const { id, title, description } = req.body;
+
+  if (!id || !title || !description  === undefined) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+>>>>>>> 5da0dd817972df19f44f9ffa9a69e4cd8a1131ad
 
   try {
-        // @ts-ignore 
+    // @ts-ignore
     const userId = req.userid;
-    const updatedTodo = await pgClient.query(
-      `UPDATE TODO
+
+    const result = await pgClient.query(
+      `UPDATE TODO 
        SET title = COALESCE($1, title), 
-           description = COALESCE($2, description), 
-           isdone = COALESCE($3, isdone)
-       WHERE id = $4 AND user_id = $5 
+           description = COALESCE($2, description)
+       WHERE id = $3 AND user_id = $4
        RETURNING *;`,
-      [title, description, isdone, id, userId]
+      [title, description, id, userId]
     );
 
-    if (updatedTodo.rows.length === 0) {
-      return res.status(404).json({ message: "Todo not found or you don't have permission to edit" });
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Todo not found or unauthorized" });
     }
 
-    res.json({ message: "Todo Updated", todo: updatedTodo.rows[0] });
+    res.status(200).json({ message: "Todo updated", todo: result.rows[0] });
   } catch (error) {
+    console.error("Error updating todo:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
 // Delete Todo Route
     // @ts-ignore 
 

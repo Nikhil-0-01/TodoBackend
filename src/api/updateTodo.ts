@@ -12,9 +12,9 @@ app.use(cors())
 // Update Todo
 // @ts-ignore 
 app.put("/api/updateTodo", Middleware, async (req, res) => {
-  const { id, title, description, isdone } = req.body;
+  const { id, title, description } = req.body;
 
-  if (!id || !title || !description || isdone === undefined) {
+  if (!id || !title || !description  === undefined) {
     return res.status(400).json({ message: "Missing required fields" });
   }
 
@@ -25,11 +25,10 @@ app.put("/api/updateTodo", Middleware, async (req, res) => {
     const result = await pgClient.query(
       `UPDATE TODO 
        SET title = COALESCE($1, title), 
-           description = COALESCE($2, description), 
-           isdone = COALESCE($3, isdone)
-       WHERE id = $4 AND user_id = $5
+           description = COALESCE($2, description)
+       WHERE id = $3 AND user_id = $4
        RETURNING *;`,
-      [title, description, isdone, id, userId]
+      [title, description, id, userId]
     );
 
     if (result.rows.length === 0) {
