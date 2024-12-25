@@ -186,6 +186,7 @@ app.post('/api/createNote', Middleware, async (req, res) => {
   const { title } = req.body;
 
   try {
+    // @ts-ignore
       const { userid } = req;
 
     if (!userid) {
