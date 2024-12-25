@@ -181,6 +181,7 @@ app.delete("/api/deleteTodo", Middleware, async (req, res) => {
 });
 
 
+// @ts-ignore
 app.post('/api/createNote', Middleware, async (req, res) => {
   const { title } = req.body;
 
