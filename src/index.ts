@@ -70,11 +70,6 @@ app.post("/api/signin", async (req, res) => {
 
     // @ts-ignore 
     const token = jwt.sign({ id: findUser.rows[0].id }, process.env.SECRET);
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> 5da0dd817972df19f44f9ffa9a69e4cd8a1131ad
     res.json({
       token: token,
       username: findUser.rows[0].username,
@@ -88,11 +83,7 @@ app.post("/api/signin", async (req, res) => {
   // @ts-ignore 
 
 app.get("/api/alltodos", Middleware, async (req, res) => {
-<<<<<<< HEAD
-  try {
-=======
  try {
->>>>>>> 5da0dd817972df19f44f9ffa9a69e4cd8a1131ad
 
     // @ts-ignore 
     const { userid } = req;  // Assuming `userid` is added in the middleware to `req.body`
@@ -134,15 +125,11 @@ app.post("/api/createTodo", Middleware, async (req, res) => {
 // Update Todo Route
 // @ts-ignore 
 app.put("/api/updateTodo", Middleware, async (req, res) => {
-<<<<<<< HEAD
-  const { id, title, description, isdone } = req.body;
-=======
   const { id, title, description } = req.body;
 
   if (!id || !title || !description  === undefined) {
     return res.status(400).json({ message: "Missing required fields" });
   }
->>>>>>> 5da0dd817972df19f44f9ffa9a69e4cd8a1131ad
 
   try {
     // @ts-ignore
@@ -189,6 +176,33 @@ app.delete("/api/deleteTodo", Middleware, async (req, res) => {
     res.json({ message: "Todo Deleted", todo: deletedTodo.rows[0] });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+// @ts-ignore 
+app.post('/api/createNote', Middleware, async (req, res) => {
+  const { title } = req.body;
+
+  try {
+    // @ts-ignore 
+    const { userid } = req; 
+
+
+    if (!userid) {
+      return res.status(401).json({ message: 'Invalid Token' });  // Token validation failure
+    }
+
+    // Insert the new todo item into the database
+    const result = await pgClient.query(
+      `INSERT INTO Notes (title, user_id) VALUES ($1, $2) RETURNING *;`,
+      [title, userid]
+    );
+
+    res.json({ note : result.rows[0] });  // Send back the inserted todo
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });  // Handle any errors
   }
 });
 
