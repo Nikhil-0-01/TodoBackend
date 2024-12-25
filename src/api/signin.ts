@@ -36,10 +36,7 @@ app.post('/api/signin', async (req: Request, res: Response) => {
     }
 
     // Generate JWT token if authentication is successful
-<<<<<<< HEAD
     // @ts-ignore 
-=======
->>>>>>> 5da0dd817972df19f44f9ffa9a69e4cd8a1131ad
     const token = jwt.sign({ id: findUser.rows[0].id }, process.env.SECRET);
 
     // Send response with the token and username
