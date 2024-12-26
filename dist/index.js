@@ -94,8 +94,6 @@ app.post("/api/createNote", middleware_1.Middleware, async (req, res) => {
         res.status(500).json({ message: 'Internal server error' }); // Handle any errors
     }
 });
-
-
 // Create Todo Route
 app.post("/api/createTodo", middleware_1.Middleware, async (req, res) => {
     const { title, description, isdone } = req.body;
@@ -152,7 +150,6 @@ app.delete("/api/deleteTodo", middleware_1.Middleware, async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 });
-
 // Listen to port (Vercel handles dynamic port assignment)
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
