@@ -96,7 +96,6 @@ app.post("/api/createNote", middleware_1.Middleware, async (req, res) => {
 });
 
 
-
 // Create Todo Route
 app.post("/api/createTodo", middleware_1.Middleware, async (req, res) => {
     const { title, description, isdone } = req.body;
