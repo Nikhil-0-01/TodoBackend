@@ -16,7 +16,7 @@ export default async (req, res) => {
             return res.status(404).json({ message: "Note not found or you don't have permission to delete" });
         }
 
-        res.json({ message: "Note Deleted", todo: deletedNote.rows[0] });
+        res.json({note: deletedNote.rows[0] });
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });
     }
