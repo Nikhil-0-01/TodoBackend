@@ -77,7 +77,7 @@ app.get("/api/alltodos", middleware_1.Middleware, async (req, res) => {
     }
 });
 // @ts-ignore 
-app.post("/api/createNote", middleware_1.Middleware, async (req, res) => {
+app.post("/api/note", middleware_1.Middleware, async (req, res) => {
     const { title } = req.body;
     try {
         // @ts-ignore
