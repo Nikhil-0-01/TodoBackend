@@ -9,7 +9,7 @@ exports.default = async (req, res) => {
         if (!userid) {
             return res.status(401).json({ message: 'Invalid Token' });
         }
-        const findNotes = await db_1.pgClient.query(`SELECT id ,title FROM Note WHERE user_id = $1`, [userid]);
+        const findNotes = await db_1.pgClient.query(`SELECT id ,title FROM Notes WHERE user_id = $1`, [userid]);
         res.json({ note: findNotes.rows });
     }
     catch (error) {
