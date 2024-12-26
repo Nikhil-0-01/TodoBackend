@@ -152,6 +152,10 @@ app.delete("/api/deleteTodo", middleware_1.Middleware, async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 });
+
+app.get("/api/todo", (req,res) => {
+    res.json("hello")
+})
 // Listen to port (Vercel handles dynamic port assignment)
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
