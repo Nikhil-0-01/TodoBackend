@@ -117,7 +117,7 @@ app.get("/api/allnotes", Middleware, async (req, res) => {
      }
  
      const findNotes = await pgClient.query(
-       `SELECT id ,title FROM Note WHERE user_id = $1`, 
+       `SELECT id ,title FROM Notes WHERE user_id = $1`, 
        [userid]
      );
  
