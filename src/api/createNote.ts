@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());  // To parse incoming JSON data
 app.use(cors())
 
-// POST /api/createTodo route
+// POST /api/createNote route
 // @ts-ignore 
 app.post('/api/createNote', Middleware, async (req: Request, res: Response) => {
  const { title } = req.body;
