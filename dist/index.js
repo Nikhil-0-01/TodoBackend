@@ -110,6 +110,8 @@ app.post("/api/note", middleware_1.Middleware, async (req, res) => {
         res.status(500).json({ message: 'Internal server error' }); // Handle any errors
     }
 });
+
+
 // Create Todo Route
 app.post("/api/createTodo", middleware_1.Middleware, async (req, res) => {
     const { title, description, isdone } = req.body;
