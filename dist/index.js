@@ -77,9 +77,25 @@ app.get("/api/alltodos", middleware_1.Middleware, async (req, res) => {
     }
 });
 // @ts-ignore 
-app.post("/api/note", async (req, res) => {
-    res.json({message: "hello"})
+app.post("/api/note", middleware_1.Middleware, async (req, res) => {
+    const { title } = req.body;
+    try {
+        // @ts-ignore
+        const { userid } = req;
+        if (!userid) {
+            return res.status(401).json({ message: 'Invalid Token' }); // Token validation failure
+        }
+        // Insert the new todo item into the database
+        const result = await db_1.pgClient.query(`INSERT INTO Notes (title, user_id) VALUES ($1, $2) RETURNING *;`, [title, userid]);
+        res.json({ note: result.rows[0] }); // Send back the inserted todo
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' }); // Handle any errors
+    }
 });
+
+
 // Create Todo Route
 app.post("/api/createTodo", middleware_1.Middleware, async (req, res) => {
     const { title, description, isdone } = req.body;
