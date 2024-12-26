@@ -103,9 +103,7 @@ app.get("/api/alltodos", Middleware, async (req, res) => {
   }
 });
 
-
-
-// @ts-ignore
+// @ts-ignore 
 app.post("/api/createNote", Middleware, async (req, res) => {
   const { title } = req.body;
 
@@ -129,7 +127,6 @@ app.post("/api/createNote", Middleware, async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });  // Handle any errors
   }
 });
-
 
 
 
