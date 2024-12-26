@@ -19,7 +19,7 @@ app.get('/api/alltodos', middleware_1.Middleware, async (req, res) => {
         if (!userid) {
             return res.status(401).json({ message: 'Invalid Token' });
         }
-        const findTodos = await db_1.pgClient.query(`SELECT title, description, isdone FROM TODO WHERE user_id = $1`, [userid]);
+        const findTodos = await db_1.pgClient.query(`SELECT id ,title, description, isdone FROM TODO WHERE user_id = $1`, [userid]);
         res.json({ todo: findTodos.rows });
     }
     catch (error) {

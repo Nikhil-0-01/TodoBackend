@@ -14,8 +14,8 @@ app.use((0, cors_1.default)());
 // Update Todo
 // @ts-ignore 
 app.put("/api/updateTodo", middleware_1.Middleware, async (req, res) => {
-    const { id, title, description, isdone } = req.body;
-    if (!id || !title || !description || isdone === undefined) {
+    const { id, title, description } = req.body;
+    if (!id || !title || !description === undefined) {
         return res.status(400).json({ message: "Missing required fields" });
     }
     try {
@@ -23,10 +23,9 @@ app.put("/api/updateTodo", middleware_1.Middleware, async (req, res) => {
         const userId = req.userid;
         const result = await db_1.pgClient.query(`UPDATE TODO 
        SET title = COALESCE($1, title), 
-           description = COALESCE($2, description), 
-           isdone = COALESCE($3, isdone)
-       WHERE id = $4 AND user_id = $5
-       RETURNING *;`, [title, description, isdone, id, userId]);
+           description = COALESCE($2, description)
+       WHERE id = $3 AND user_id = $4
+       RETURNING *;`, [title, description, id, userId]);
         if (result.rows.length === 0) {
             return res.status(404).json({ message: "Todo not found or unauthorized" });
         }
