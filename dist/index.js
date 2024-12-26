@@ -64,15 +64,34 @@ app.post("/api/signin", async (req, res) => {
 app.get("/api/alltodos", middleware_1.Middleware, async (req, res) => {
     try {
         // @ts-ignore 
-        const userId = req.userid;
-        if (!userId) {
-            return res.status(401).json({ message: "Invalid Token" });
+        const { userid } = req; // Assuming `userid` is added in the middleware to `req.body`
+        if (!userid) {
+            return res.status(401).json({ message: 'Invalid Token' });
         }
-        const findTodos = await db_1.pgClient.query(`SELECT title, description, isdone FROM TODO WHERE user_id = $1`, [userId]);
+        const findTodos = await db_1.pgClient.query(`SELECT id ,title, description, isdone FROM TODO WHERE user_id = $1`, [userid]);
         res.json({ todo: findTodos.rows });
     }
     catch (error) {
-        res.status(500).json({ message: "Internal server error" });
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+// @ts-ignore
+app.post("/api/createNote", middleware_1.Middleware, async (req, res) => {
+    const { title } = req.body;
+    try {
+        // @ts-ignore
+        const { userid } = req;
+        if (!userid) {
+            return res.status(401).json({ message: 'Invalid Token' }); // Token validation failure
+        }
+        // Insert the new todo item into the database
+        const result = await db_1.pgClient.query(`INSERT INTO Notes (title, user_id) VALUES ($1, $2) RETURNING *;`, [title, userid]);
+        res.json({ note: result.rows[0] }); // Send back the inserted todo
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' }); // Handle any errors
     }
 });
 // Create Todo Route
@@ -91,29 +110,32 @@ app.post("/api/createTodo", middleware_1.Middleware, async (req, res) => {
 });
 // Update Todo Route
 // @ts-ignore 
-app.put("/api/alltodos/update", middleware_1.Middleware, async (req, res) => {
-    const { id, title, description, isdone } = req.body;
+app.put("/api/updateTodo", middleware_1.Middleware, async (req, res) => {
+    const { id, title, description } = req.body;
+    if (!id || !title || !description === undefined) {
+        return res.status(400).json({ message: "Missing required fields" });
+    }
     try {
-        // @ts-ignore 
+        // @ts-ignore
         const userId = req.userid;
-        const updatedTodo = await db_1.pgClient.query(`UPDATE TODO
+        const result = await db_1.pgClient.query(`UPDATE TODO 
        SET title = COALESCE($1, title), 
-           description = COALESCE($2, description), 
-           isdone = COALESCE($3, isdone)
-       WHERE id = $4 AND user_id = $5 
-       RETURNING *;`, [title, description, isdone, id, userId]);
-        if (updatedTodo.rows.length === 0) {
-            return res.status(404).json({ message: "Todo not found or you don't have permission to edit" });
+           description = COALESCE($2, description)
+       WHERE id = $3 AND user_id = $4
+       RETURNING *;`, [title, description, id, userId]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "Todo not found or unauthorized" });
         }
-        res.json({ message: "Todo Updated", todo: updatedTodo.rows[0] });
+        res.status(200).json({ message: "Todo updated", todo: result.rows[0] });
     }
     catch (error) {
+        console.error("Error updating todo:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 });
 // Delete Todo Route
 // @ts-ignore 
-app.delete("/api/alltodos/delete", middleware_1.Middleware, async (req, res) => {
+app.delete("/api/deleteTodo", middleware_1.Middleware, async (req, res) => {
     const { id } = req.body;
     try {
         // @ts-ignore 

@@ -14,6 +14,7 @@ function Middleware(req, res, next) {
     try {
         // @ts-ignore 
         const tokenVerify = jsonwebtoken_1.default.verify(authHeader, process.env.SECRET);
+        // @ts-ignore 
         req.userid = tokenVerify.id;
         next();
     }

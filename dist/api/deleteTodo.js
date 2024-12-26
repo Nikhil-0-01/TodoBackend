@@ -14,31 +14,17 @@ app.use((0, cors_1.default)());
 // Delete Todo
 // @ts-ignore 
 app.delete("/api/deleteTodo", middleware_1.Middleware, async (req, res) => {
-    const { id, title } = req.body;
-    if (!id && !title) {
-        return res.status(400).json({ message: "Either id or title is required" });
-    }
+    const { id } = req.body;
     try {
-        // @ts-ignore
+        // @ts-ignore 
         const userId = req.userid;
-        let query = `DELETE FROM TODO WHERE user_id = $1 AND `;
-        let values = [userId];
-        if (id) {
-            query += `id = $2`;
-            values.push(id);
+        const deletedTodo = await db_1.pgClient.query(`DELETE FROM TODO WHERE id = $1 AND user_id = $2 RETURNING *;`, [id, userId]);
+        if (deletedTodo.rows.length === 0) {
+            return res.status(404).json({ message: "Todo not found or you don't have permission to delete" });
         }
-        else if (title) {
-            query += `title = $2`;
-            values.push(title);
-        }
-        const result = await db_1.pgClient.query(query, values);
-        if (result.rowCount === 0) {
-            return res.status(404).json({ message: "Todo not found or unauthorized" });
-        }
-        res.status(200).json({ message: "Todo deleted successfully" });
+        res.json({ message: "Todo Deleted", todo: deletedTodo.rows[0] });
     }
     catch (error) {
-        console.error("Error deleting todo:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 });

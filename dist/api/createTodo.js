@@ -15,7 +15,9 @@ app.use((0, cors_1.default)());
 app.post('/api/createTodo', middleware_1.Middleware, async (req, res) => {
     const { title, description, isdone } = req.body;
     try {
-        const { userid } = req.body; // Assuming the `userid` is added to `req.body` by Middleware
+        // const { userid } = req.body; 
+        // @ts-ignore 
+        const userid = req.userid;
         if (!userid) {
             return res.status(401).json({ message: 'Invalid Token' }); // Token validation failure
         }
