@@ -104,7 +104,7 @@ app.get("/api/alltodos", Middleware, async (req, res) => {
 });
 
 // @ts-ignore 
-app.post("/api/createNote", Middleware, async (req, res) => {
+app.post("/api/note", Middleware, async (req, res) => {
   const { title } = req.body;
 
   try {
