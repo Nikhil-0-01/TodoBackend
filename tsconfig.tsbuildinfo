@@ -1,1 +1,1 @@
-{"root":["./src/db.ts","./src/index.ts","./src/middleware.ts","./src/api/allnotes.ts","./src/api/alltodos.ts","./src/api/createtodo.ts","./src/api/deletetodo.ts","./src/api/note.ts","./src/api/signin.ts","./src/api/signup.ts","./src/api/updatetodo.ts"],"version":"5.7.2"}
+{"root":["./src/db.ts","./src/index.ts","./src/middleware.ts","./src/api/allnotes.ts","./src/api/alltodos.ts","./src/api/createtodo.ts","./src/api/deletenote.ts","./src/api/deletetodo.ts","./src/api/note.ts","./src/api/signin.ts","./src/api/signup.ts","./src/api/updatetodo.ts"],"version":"5.7.2"}

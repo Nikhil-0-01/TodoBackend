@@ -117,7 +117,7 @@ app.get("/api/allnotes", Middleware, async (req, res) => {
      }
  
      const findNotes = await pgClient.query(
-       `SELECT id ,title FROM Note WHERE user_id = $1`, 
+       `SELECT id, title FROM Note WHERE user_id = $1`, 
        [userid]
      );
  
@@ -232,6 +232,30 @@ app.delete("/api/deleteTodo", Middleware, async (req, res) => {
     res.json({ message: "Todo Deleted", todo: deletedTodo.rows[0] });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+// @ts-ignore 
+app.delete("/api/deleteNote", Middleware, async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    // @ts-ignore 
+      const userId = req.userid;  // Middleware adds `userid` to `req`
+
+      const deletedNote= await pgClient.query(
+          `DELETE FROM Notes WHERE id = $1 AND user_id = $2 RETURNING *;`,
+          [id, userId]
+      );
+
+      if (deletedNote.rows.length === 0) {
+          return res.status(404).json({ message: "Note not found or you don't have permission to delete" });
+      }
+
+      res.json({ message: "Note Deleted", todo: deletedNote.rows[0] });
+  } catch (error) {
+      res.status(500).json({ message: "Internal server error" });
   }
 });
 

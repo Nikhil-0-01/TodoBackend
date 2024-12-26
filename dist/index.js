@@ -84,7 +84,7 @@ app.get("/api/allnotes", middleware_1.Middleware, async (req, res) => {
         if (!userid) {
             return res.status(401).json({ message: 'Invalid Token' });
         }
-        const findNotes = await db_1.pgClient.query(`SELECT id ,title FROM Note WHERE user_id = $1`, [userid]);
+        const findNotes = await db_1.pgClient.query(`SELECT id, title FROM Note WHERE user_id = $1`, [userid]);
         res.json({ note: findNotes.rows });
     }
     catch (error) {
@@ -110,8 +110,6 @@ app.post("/api/note", middleware_1.Middleware, async (req, res) => {
         res.status(500).json({ message: 'Internal server error' }); // Handle any errors
     }
 });
-
-
 // Create Todo Route
 app.post("/api/createTodo", middleware_1.Middleware, async (req, res) => {
     const { title, description, isdone } = req.body;
@@ -163,6 +161,22 @@ app.delete("/api/deleteTodo", middleware_1.Middleware, async (req, res) => {
             return res.status(404).json({ message: "Todo not found or you don't have permission to delete" });
         }
         res.json({ message: "Todo Deleted", todo: deletedTodo.rows[0] });
+    }
+    catch (error) {
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+// @ts-ignore 
+app.delete("/api/deleteNote", middleware_1.Middleware, async (req, res) => {
+    const { id } = req.body;
+    try {
+        // @ts-ignore 
+        const userId = req.userid; // Middleware adds `userid` to `req`
+        const deletedNote = await db_1.pgClient.query(`DELETE FROM Notes WHERE id = $1 AND user_id = $2 RETURNING *;`, [id, userId]);
+        if (deletedNote.rows.length === 0) {
+            return res.status(404).json({ message: "Note not found or you don't have permission to delete" });
+        }
+        res.json({ message: "Note Deleted", todo: deletedNote.rows[0] });
     }
     catch (error) {
         res.status(500).json({ message: "Internal server error" });
