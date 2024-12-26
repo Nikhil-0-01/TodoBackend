@@ -61,6 +61,14 @@ async function schemaSetting() {
           FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
       `);
+            await pgClient.query(`
+        CREATE TABLE IF NOT EXISTS Notes (
+          id SERIAL PRIMARY KEY,
+          title VARCHAR(255) NOT NULL,
+          user_id INTEGER NOT NULL,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+      `);
         }
     }
     catch (err) {
