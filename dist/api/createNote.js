@@ -12,7 +12,7 @@ app.use(express_1.default.json()); // To parse incoming JSON data
 app.use((0, cors_1.default)());
 // POST /api/createTodo route
 // @ts-ignore 
-app.post('/api/createNote', middleware_1.Middleware, async (req, res) => {
+app.post("/api/createNote", middleware_1.Middleware, async (req, res) => {
     const { title } = req.body;
     try {
         // @ts-ignore
