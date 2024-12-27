@@ -10,7 +10,7 @@ exports.default = async (req, res) => {
     try {
         const userId = req.userid; // Middleware adds `userid` to `req`
         const result = await db_1.pgClient.query(`UPDATE Notes 
-             SET title = COALESCE($1, title), 
+             SET title = COALESCE($1, title)
              WHERE id = $2 AND user_id = $3
              RETURNING *;`, [title, id, userId]);
         if (result.rows.length === 0) {
