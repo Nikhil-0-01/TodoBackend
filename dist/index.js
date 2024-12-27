@@ -84,13 +84,8 @@ app.get("/api/allnotes", middleware_1.Middleware, async (req, res) => {
         if (!userid) {
             return res.status(401).json({ message: 'Invalid Token' });
         }
-<<<<<<< HEAD
-        const findNotes = await db_1.pgClient.query(`SELECT id, title FROM Note WHERE user_id = $1`, [userid]);
+        const findNotes = await db_1.pgClient.query(`SELECT id, title FROM Notes WHERE user_id = $1`, [userid]);
         res.json({ note: findNotes.rows });
-=======
-        const findNotes = await db_1.pgClient.query(`SELECT id ,title FROM Notes WHERE user_id = $1`, [userid]);
-        res.json({ note: findNotes.rows[0] });
->>>>>>> d486ff901a5f352a94378833ca35cbbf53f6d513
     }
     catch (error) {
         console.error(error);
@@ -151,6 +146,29 @@ app.put("/api/updateTodo", middleware_1.Middleware, async (req, res) => {
     }
     catch (error) {
         console.error("Error updating todo:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+// @ts-ignore 
+app.put("/api/updateNote", async (req, res) => {
+    const { id, title } = req.body;
+    if (!id || !title) {
+        return res.status(400).json({ message: "Missing required fields" });
+    }
+    try {
+        // @ts-ignore 
+        const userId = req.userid; // Middleware adds `userid` to `req`
+        const result = await db_1.pgClient.query(`UPDATE Notes 
+           SET title = COALESCE($1, title), 
+           WHERE id = $2 AND user_id = $3
+           RETURNING *;`, [title, id, userId]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "Note not found or unauthorized" });
+        }
+        res.status(200).json({ message: "Note updated", note: result.rows[0] });
+    }
+    catch (error) {
+        console.error("Error updating note:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 });
