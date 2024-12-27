@@ -1,6 +1,6 @@
 import { Middleware } from '../middleware';
 import { pgClient } from '../db';
-import note from './note';
+
 
 // @ts-ignore 
 export default async (req, res) => {
