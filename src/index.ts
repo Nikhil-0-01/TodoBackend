@@ -213,7 +213,7 @@ app.put("/api/updateTodo", Middleware, async (req, res) => {
 
 
 // @ts-ignore 
-app.put("/api/updateNote", async(req,res) => {
+app.put("/api/updateNote",middleware_1.Middleware, async(req,res) => {
   const { id, title} = req.body;
 
   if (!id || !title) {
