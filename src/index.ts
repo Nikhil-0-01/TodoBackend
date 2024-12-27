@@ -226,7 +226,7 @@ app.put("/api/updateNote",Middleware, async(req,res) => {
 
       const result = await pgClient.query(
           `UPDATE Notes 
-           SET title = COALESCE($1, title), 
+           SET title = COALESCE($1, title)
            WHERE id = $2 AND user_id = $3
            RETURNING *;`,
           [title, id, userId]
