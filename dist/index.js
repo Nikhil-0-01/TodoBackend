@@ -84,14 +84,11 @@ app.get("/api/allnotes", middleware_1.Middleware, async (req, res) => {
         if (!userid) {
             return res.status(401).json({ message: 'Invalid Token' });
         }
-<<<<<<< HEAD
-        const findNotes = await db_1.pgClient.query(`SELECT id, title FROM Notes WHERE user_id = $1`, [userid]);
-        res.json({ note: findNotes.rows });
-=======
+
 
         const findNotes = await db_1.pgClient.query(`SELECT id ,title FROM Notes WHERE user_id = $1`, [userid]);
         res.json({ note: findNotes.rows[0] });
->>>>>>> 90c313d9fcf9caefff778ac088bcf2a921a374e7
+
     }
     catch (error) {
         console.error(error);
