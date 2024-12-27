@@ -150,7 +150,7 @@ app.put("/api/updateTodo", middleware_1.Middleware, async (req, res) => {
     }
 });
 // @ts-ignore 
-app.put("/api/updateNote",middleware_1.Middleware, async (req, res) => {
+app.put("/api/updateNote", middleware_1.Middleware, async (req, res) => {
     const { id, title } = req.body;
     if (!id || !title) {
         return res.status(400).json({ message: "Missing required fields" });
